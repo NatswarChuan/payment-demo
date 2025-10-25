@@ -1,0 +1,88 @@
+# ===================================================================
+# CORE SPRING BOOT PROPERTIES
+# ===================================================================
+spring.application.name=demo
+
+# ===================================================================
+# JWT CONFIGURATION
+# GHI CHÚ BẢO MẬT: JWT_SECRET nên được đặt làm biến môi trường trong môi trường production.
+# Giá trị mặc định chỉ dùng cho mục đích phát triển.
+# ===================================================================
+jwt.secret=${JWT_SECRET}
+jwt.access-token-expiration-ms=3600000
+jwt.refresh-token-expiration-days=30
+
+# ===================================================================
+# DATABASE CONFIGURATION
+# GHI CHÚ BẢO MẬT: DB_URL, DB_USERNAME, và đặc biệt là DB_PASSWORD
+# phải được cấu hình thông qua biến môi trường trong production.
+# ===================================================================
+spring.datasource.url=${DB_URL:jdbc:mysql://localhost:3306/test_payment?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC}
+spring.datasource.username=${DB_USERNAME}
+spring.datasource.password=${DB_PASSWORD}
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQLDialect
+
+# ===================================================================
+# REDIS CONFIGURATION
+# GHI CHÚ BẢO MẬT: REDIS_PASSWORD nên được đặt làm biến môi trường.
+# ===================================================================
+spring.data.redis.host=${REDIS_HOST}
+spring.data.redis.port=${REDIS_PORT}
+spring.data.redis.password=${REDIS_PASSWORD:}
+
+# ===================================================================
+# EMAIL (SMTP) CONFIGURATION
+# GHI CHÚ BẢO MẬT: Toàn bộ cấu hình mail nên được quản lý qua biến môi trường.
+# Các giá trị mặc định ở đây là cho Mailtrap và chỉ dùng cho phát triển.
+# ===================================================================
+spring.mail.host=${MAIL_HOST:sandbox.smtp.mailtrap.io}
+spring.mail.port=${MAIL_PORT}
+spring.mail.username=${MAIL_USERNAME}
+spring.mail.password=${MAIL_PASSWORD}
+spring.mail.properties.mail.smtp.auth=true
+spring.mail.properties.mail.smtp.starttls.enable=true
+spring.mail.from=no-reply@payment-demo.com
+
+# ===================================================================
+# SMS SERVICE CONFIGURATION
+# GHI CHÚ BẢO MẬT: Các khóa bí mật của dịch vụ SMS phải được bảo vệ.
+# ===================================================================
+app.sms.enabled=true
+app.sms.debug=false
+app.sms.world-sms.endpoint=https://api-04.worldsms.vn/apidebit/sendSMS
+app.sms.world-sms.app-key=Fido Box
+app.sms.world-sms.secret-key=${WORLDSMS_SECRET_KEY}
+app.sms.world-sms.app-id=${WORLDSMS_APP_ID:}
+
+# ===================================================================
+# APPLICATION URLS
+# ===================================================================
+app.base-url=${APP_BASE_URL:http://localhost:8080}
+app.payment.return-url=${app.base-url}/payment-success
+
+# ===================================================================
+# BUSINESS LOGIC CONFIGURATION
+# ===================================================================
+app.otp.expiration-minutes=5
+app.secret-key.expiration-minutes=2
+app.otp.rate-limit.max-requests=5
+app.otp.rate-limit.window-minutes=10
+app.secret-key.rate-limit.max-requests=5
+app.secret-key.rate-limit.window-minutes=10
+
+
+# ===================================================================
+# VNPAY GATEWAY CONFIGURATION
+# GHI CHÚ BẢO MẬT: vnpay.hash-secret là cực kỳ nhạy cảm và BẮT BUỘC
+# phải được đặt làm biến môi trường trong production.
+# ===================================================================
+vnpay.url=https://sandbox.vnpayment.vn/paymentv2/vpcpay.html
+vnpay.api-url=https://sandbox.vnpayment.vn/merchant_webapi/api/transaction
+vnpay.payout-url=${vnpay.api-url}
+vnpay.tmn-code=${VNPAY_TMN_CODE}
+vnpay.hash-secret=${VNPAY_HASH_SECRET}
+vnpay.version=2.1.0
+vnpay.allowed-ips=${VNPAY_ALLOWED_IPS}
